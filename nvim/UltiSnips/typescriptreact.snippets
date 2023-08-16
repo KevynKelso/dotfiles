@@ -1,0 +1,35 @@
+snippet conso "Auto Console Log" A
+console.log($0)
+endsnippet
+
+snippet bool "boolean" A
+boolean
+endsnippet
+
+snippet func "function boiler plate" b
+function $0($1) {
+	$2
+}
+endsnippet
+
+snippet rfc "react functional component boilerplate" b
+import React from "react";
+
+export default function $0() {
+
+	return (
+		<>
+		</>
+	);
+}
+endsnippet
+
+snippet suseState "useState boilerplate" A
+const [$0, set$0] = useState<>()
+endsnippet
+
+snippet suseEffect "useEffect boilerplate" A
+useEffect(() => {
+  $0
+}, [])
+endsnippet

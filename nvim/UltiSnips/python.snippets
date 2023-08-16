@@ -1,0 +1,59 @@
+snippet vsize "Use for ensuring lengths of 2 arrays is the same" b
+def verify_size(list1, list2):
+		if len(list1) != len(list2):
+				failprint('Lists not the same size')
+				sys.exit(1)
+
+endsnippet
+
+snippet arrops "Function for performing operations on arrays" b
+def $1(list1):
+		output = []
+
+		for elem in list1:
+				output.append(elem)
+
+		return output
+
+endsnippet
+
+snippet ifname "classic python entry point" A
+def main($1):
+
+if __name__ == '__main__':
+	main($1)
+endsnippet
+
+snippet #! "Python3 shebang" A
+#!/usr/bin/env python3
+endsnippet
+
+snippet wofr "with open read" b
+with open($1, 'r') as f:
+	$2 = f.read()
+endsnippet
+
+snippet wofw "with open write" b
+with open($1, 'w') as f:
+	f.write($2)
+endsnippet
+
+# Selenium --------------------------------------------------------------------
+snippet web "Basic selenium boilerplate" b
+from selenium import webdriver
+
+
+def start():
+    browser = webdriver.Chrome()
+    browser.set_window_position(0,0)
+    browser.get(f'https://www.google.com/')
+	browser.quit()
+endsnippet
+
+snippet PLT_L "Basic matplotlib line plot" A
+plt.title("Reconstruction loss")
+plt.xlabel("1/2 batch")
+plt.ylabel("loss")
+plt.plot(df["ae_loss"])
+plt.show()
+endsnippet

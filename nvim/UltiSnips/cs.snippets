@@ -1,0 +1,90 @@
+snippet doc "Documentation comment" b
+/// <summary>
+///
+/// </summary>
+/// <param name="$1"></param>
+endsnippet
+
+snippet using "Basic cs starter" b
+using System;
+
+namespace $1 {
+	class $2 {
+	}
+}
+endsnippet
+
+snippet for( "for loop boilerplate" A
+for(int $1 = 0; $1 < $2; $1++) {
+	$3
+}
+endsnippet
+
+snippet forea "forech loop boilerplate" A
+foreach(var $1 in $2) {
+	$3
+}
+endsnippet
+
+snippet main "main boilerplate" b
+static void Main(string[] args) {
+	$1
+}
+endsnippet
+
+snippet if( "if boilerplate" A
+if ($1) {
+	$2
+}
+endsnippet
+
+snippet while( "while boilerplate" A
+while ($1) {
+	$2
+}
+endsnippet
+
+# Auto generate console statements --------------------------------------------
+snippet print "Description" A
+Console.
+endsnippet
+
+snippet Console.W "Description" A
+Console.Write
+endsnippet
+
+snippet Console.Write( "Description" A
+Console.Write($"$1");
+endsnippet
+
+snippet Console.WriteL "Description" A
+Console.WriteLine($"$1");
+endsnippet
+#------------------------------------------------------------------------------
+
+# Files -----------------------------------------------------------------------
+snippet readFile "File reading boilerplate" b
+string fileLocation = "$1";
+StreamReader reader = new StreamReader(fileLocation);
+try {
+	while (!reader.EndOfStream) {
+		Console.WriteLine($"{reader.ReadLine()}");
+	}
+}
+catch (Exception e) {
+	Console.WriteLine($"{e.Message}");
+}
+endsnippet
+
+# Methods ---------------------------------------------------------------------
+snippet smethod "Description" b
+static $1 ($2) {
+	$3
+}
+endsnippet
+
+snippet pmethod "Description" b
+public $1 ($2) {
+	$3
+}
+endsnippet

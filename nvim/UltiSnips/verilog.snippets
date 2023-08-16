@@ -1,0 +1,35 @@
+snippet clock "Basic Verilog clock for tb's" b
+initial begin
+  clk = 0;
+  forever begin
+    clk = ~clk;
+    #1;
+  end
+end
+endsnippet
+
+snippet tb "Basic tb structure" b
+\`default_nettype none
+
+module $1_tb();
+reg clk;
+
+initial begin
+	clk = 0;
+	forever begin
+		clk = ~clk;
+	end
+end
+
+// instantiate
+
+initial begin
+	$dumpfile("$1.vcd");
+	$dumpvars(0, $1_tb);
+	// test here
+
+	$finish;
+end
+endmodule
+
+endsnippet

@@ -1,0 +1,59 @@
+snippet GETreq "Basic http request" b
+url := "https://api.com"
+bearer := "Bearer " + token
+
+req, err := http.NewRequest(http.MethodGet, url, nil)
+req.Header.Add("Authorization", bearer)
+
+client := &http.Client{}
+resp, err := client.Do(req)
+if err != nil {
+	return nil, err
+}
+
+body, err :=  ioutil.ReadAll(resp.Body)
+if err != nil {
+	return nil, err
+}
+
+endsnippet
+snippet POSTreq "basic http post req, two return vals" b
+
+endsnippet
+
+snippet pff "fmt.printf barebones" b
+fmt.Printf("%+v\n", $1)
+endsnippet
+
+snippet ts "type struct barebones" b
+type $1 struct {
+	$2
+}
+
+endsnippet
+
+snippet ftest "Testing function barebones" A
+func Test$1(t *testing.T) {
+}
+
+endsnippet
+
+snippet assert.EE "Standard equal assertion" A
+assert.Equal(t, "$1", err.Error())
+endsnippet
+
+snippet assert.EL "Standard equal length assertion" A
+assert.Equal(t, "$1", len($2))
+endsnippet
+
+
+snippet assert.Ni "Standard nil assertion" A
+assert.Nil(t, $1)
+endsnippet
+
+snippet if err "Standard go error checking" A
+if err$1 != nil {
+	return nil, err
+}
+
+endsnippet

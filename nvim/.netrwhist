@@ -1,0 +1,8 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =6
+let g:netrw_dirhist_6='/Users/kkelso/Desktop/projects/goPractice/ninja-level-5'
+let g:netrw_dirhist_5='/Users/kkelso/Desktop/projects/caribou/src/pages'
+let g:netrw_dirhist_4='/Users/kkelso/Desktop/projects/caribou/src/pages/guidelines'
+let g:netrw_dirhist_3='/Users/kkelso/Desktop/projects/caribou/src/pages'
+let g:netrw_dirhist_2='/Users/kkelso/Desktop/projects/caribou/src/pages/components'
+let g:netrw_dirhist_1='/Users/kkelso/Desktop/projects/caribou/src/pages'

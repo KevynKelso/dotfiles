@@ -1,0 +1,90 @@
+snippet gpio_setup "GPIO boilerplate" A
+uint8_t gpio_test_pin = 6;
+GPIO_DisablePullDown(gpio_test_pin);
+GPIO_DisablePullUp(gpio_test_pin);
+GPIO_SetOutputPinFunction(gpio_test_pin, GPIO_PIN_FUNC_OUT_GPIO);
+GPIO_DisableInput(gpio_test_pin);
+GPIO_EnableOutput(gpio_test_pin);
+GPIO_SetLow(gpio_test_pin);
+GPIO_Toggle(gpio_test_pin);
+
+endsnippet
+
+snippet gpio_rx_debug_setup "" A
+    // Unlock test mode
+    PML->RegTstEn.r32 = 0xCAFEBEEF;
+    _nop();
+    _nop();
+    _nop();
+    _nop();
+
+    for (uint8_t gpio_i = 5; gpio_i <= 11; gpio_i++)
+    {
+      GPIO_DisableInput(gpio_i);
+      GPIO_DisablePullDown(gpio_i);
+      GPIO_SetOutputPinFunction(gpio_i, GPIO_PIN_FUNC_OUT_GPIO);
+      GPIO_SetLow(gpio_i);
+      GPIO_EnableOutput(gpio_i);
+    }
+
+    // RX debug
+    // GPIO4: 
+    // GPIO5: LNA enable
+    // GPIO6: RF RX on
+    // GPIO7: RF TX on
+    // GPIO8: rx_crc_err
+    // GPIO9: pp_rx_done
+    // GPIO10: rf_access_det
+    // GPIO11: cpu_sleep
+    GPIO_SetOutputPinFunction(5, GPIO_PIN_FUNC_OUT_PML_PAD);
+    GPIO_SetOutputPinFunction(6, GPIO_PIN_FUNC_OUT_RX_ON);
+    GPIO_SetOutputPinFunction(7, GPIO_PIN_FUNC_OUT_TX_ON);
+    SYS->RegDPRTstSel1.r8[0] = 22;
+    SYS->RegDPRTstSel1.r8[1] = 22;
+    SYS->RegDPRTstSel1.r8[2] = 23;
+    SYS->RegDPRTstSel1.r8[3] = 46;
+endsnippet
+
+snippet printf_setup "printf boiler on GPIO 7" A
+// uart configuration for printf
+UART_RegisterModule();
+if (!PML_DidBootFromSleep())
+{
+	gGPIO_Config.hardwareState.RegGPIOOutputEn.r32 = (uint32_t)GPIO_MASK_PIN_7;
+    gGPIO_Config.hardwareState.RegGPIOPdEn.r32 = (uint32_t)0x000;
+    gGPIO_Config.hardwareState.RegGPIOPuEn.r32 = (uint32_t)GPIO_MASK_PIN_6 | (uint32_t)GPIO_MASK_PIN_7;
+    gGPIO_Config.hardwareState.RegGPIOOutSel1.regs.GPIOOutSel7 = (uint8_t)GPIO_PIN_FUNC_OUT_UART_TXD;
+}
+endsnippet
+
+snippet gpio_radio "" A
+uint8_t gpio_rx_pin = 6;
+GPIO_DisablePullDown(gpio_rx_pin);
+GPIO_DisablePullUp(gpio_rx_pin);
+GPIO_SetOutputPinFunction(gpio_rx_pin, GPIO_PIN_FUNC_OUT_RX_ON);
+GPIO_DisableInput(gpio_rx_pin);
+GPIO_EnableOutput(gpio_rx_pin);
+endsnippet
+
+snippet gpio_set_raw "" A
+uint8_t gpio = 6;
+GPIO->RegGPIOPdEn.r32 &= ~(1 << gpio);
+GPIO->RegGPIOPuEn.r32 &= ~(1 << gpio);
+uint8_t *pGpioOutSel = (uint8_t*)GPIO->RegGPIOOutSel0.r8;
+pGpioOutSel[gpio] = (uint8_t)GPIO_PIN_FUNC_OUT_GPIO; //lint !e415 !e416 !e661 !e662
+GPIO->RegGPIOInputEn.r32 &= ~(1 << gpio);
+GPIO->RegGPIOOutputEn.r32 |= 1 << gpio;
+GPIO->RegGPIODataOutClr.r32 = 1 << gpio;
+
+GPIO->RegGPIODataOut.r32 ^= (1 << gpio); // toggle
+endsnippet
+
+snippet inc_printf "" A
+#include "printf.h"
+#include "puts.h"
+endsnippet
+
+snippet Ffor "forward for loop boiler" A
+for (int $1 = 0; $1 < $2; $1++) {
+}
+endsnippet
