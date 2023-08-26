@@ -70,7 +70,12 @@ ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 # Path to your oh-my-zsh installation.
-plugins=(tmux zsh-syntax-highlighting zsh-autosuggestions)
+plugins=(
+    fzf-zsh-plugin
+    tmux
+    zsh-autosuggestions
+    zsh-syntax-highlighting
+)
 
 export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh

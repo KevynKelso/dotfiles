@@ -3,12 +3,19 @@
 set -e
 
 my_python_version="3.9.14"
+distro_pm="apt"
+dotfiles="$HOME/projects/dotfiles"
  
-# Make directories
 mkdir -p $HOME/bin
     
 cd $HOME
-ln -sf $HOME/projects/dotfiles/.zshrc .zshrc
+# ZSH runtime config and aliases
+ln -sf $dotfiles/.zshrc .zshrc
+ln -sf $dotfiles/aliases.zsh ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/aliases.zsh
+
+# Terminal Emulator
+mkdir -p $HOME/.config/alacritty
+ln -sf $dotfiles/alacritty.yml $HOME/.config/alacritty/alacritty.yml
 
 # Install neovim
 if !(which nvim); then
@@ -33,13 +40,14 @@ fi
 
 # Install ZSH
 if !(which zsh); then
-    sudo apt install zsh -y
+    sudo $distro_pm install zsh -y
     # Oh my zsh
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-    # pure theme
+    # pure theme TODO(kkelso): move pure to custom zsh plugins
     mkdir -p "$HOME/.zsh"
     git clone https://github.com/sindresorhus/pure.git "$HOME/.zsh/pure"
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 fi
 
 # Install pyenv
@@ -54,4 +62,13 @@ if !(which pyenv); then
 
     pyenv install $my_python_version
     pyenv global $my_python_version
+fi
+
+# Fun packages
+if !(which exa); then
+    sudo $distro_pm install exa -y
+fi
+
+if !(which bat); then
+    sudo $distro_pm install bat -y
 fi
