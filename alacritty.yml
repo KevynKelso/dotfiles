@@ -1,0 +1,8 @@
+live_config_reload: true
+window:
+  startup_mode: fullscreen
+  decorations: full
+  dynamic_padding: false
+  padding:
+    x: 6
+    y: 6
