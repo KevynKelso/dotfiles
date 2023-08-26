@@ -16,6 +16,11 @@ ln -sf $dotfiles/aliases.zsh ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/aliases.zsh
 # Terminal Emulator
 mkdir -p $HOME/.config/alacritty
 ln -sf $dotfiles/alacritty.yml $HOME/.config/alacritty/alacritty.yml
+if [! -d $HOME/.config/alacritty/ ]; then
+    # We use Alacritty's default Linux config directory as our storage location here.
+    mkdir -p ~/.config/alacritty/themes
+    git clone https://github.com/alacritty/alacritty-theme ~/.config/alacritty/themes
+fi
 
 # Install neovim
 if !(which nvim); then
