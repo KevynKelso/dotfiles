@@ -148,7 +148,7 @@ vim.cmd [[ hi DiagnosticVirtualTextWarn guifg=Gray ctermfg=Gray ]]
 -- Set highlight on search
 vim.o.hlsearch = false
 vim.o.cmdheight = 2
-vim.o.colorcolumn = 80
+vim.opt.colorcolumn = "80"
 vim.o.completeopt= "menuone,noinsert,noselect"
 vim.o.expandtab = true
 vim.o.exrc = true
