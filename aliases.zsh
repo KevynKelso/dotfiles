@@ -1,3 +1,15 @@
+alias debug='python3 -m blengine --port=/dev/ttyDVK-PCTESTER --debug'
+alias gitb='git checkout $(git branch | fzf)'
+alias gitdev='git checkout develop && git submodule update'
+alias gitfresh='git checkout develop && git pull && git submodule update && cd rom/dev && git checkout develop && git pull && git submodule update && cd ../../'
+alias grc='git rebase --continue'
+alias gstat='git status'
+alias gsu='git submodule update --init --recursive'
+alias l='ls -CF'
+alias la='ls -A'
 alias ll="exa -lga"
-alias x="exit"
-alias vi="nvim"
+alias rg='rg-ripgrep --path-to-ignore ~/.ignore'
+alias vi='nvim'
+alias x='exit'
+alias ykushda='while read -r serial; do ykushcmd -s $serial -d a; done < <(ykushcmd -l | grep -oE "YK[0-9]{5}")'
+alias ykushua='while read -r serial; do ykushcmd -s $serial -u a; done < <(ykushcmd -l | grep -oE "YK[0-9]{5}")'
