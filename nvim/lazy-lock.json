@@ -1,5 +1,7 @@
 {
   "Comment.nvim": { "branch": "master", "commit": "0236521ea582747b58869cb72f70ccfa967d2e89" },
+  "coq.artifacts": { "branch": "artifacts", "commit": "af92b636ceee8c657463fd816146b28d43ace732" },
+  "coq.thirdparty": { "branch": "3p", "commit": "47a748c18d6378df7aa033527d1b56d6dec94dc5" },
   "coq_nvim": { "branch": "coq", "commit": "cb44d4df9caa4a5a1534f4919d9f595e7c9bf6bf" },
   "fidget.nvim": { "branch": "main", "commit": "0ba1e16d07627532b6cae915cc992ecac249fb97" },
   "fzf": { "branch": "master", "commit": "58835e40f35fd1007de9bf607e06d555f085354c" },

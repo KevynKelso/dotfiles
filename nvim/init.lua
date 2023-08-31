@@ -118,8 +118,8 @@ require('lazy').setup({
     'ms-jpq/coq_nvim',
     branch = 'coq'
   },
-  { 'ms-jpq/coq.artifacts', {branch =  'artifacts' }},
-  { 'ms-jpq/coq.thirdparty', {branch =  '3p' }},
+  { 'ms-jpq/coq.artifacts', branch =  'artifacts' },
+  { 'ms-jpq/coq.thirdparty', branch =  '3p' },
   {
     -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
@@ -132,7 +132,7 @@ require('lazy').setup({
 
 vim.cmd [[colorscheme gruvbox-material]]
 vim.cmd [[
-let g:fzf_preview_window = ['hidden,right,50%,<70(up,40%)', 'ctrl-/']
+let g:fzf_preview_window = ['hidden,right,50%,<70(up,40%)', 'ctrl-p']
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
   \   'rg-ripgrep --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
