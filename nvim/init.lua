@@ -118,6 +118,8 @@ require('lazy').setup({
     'ms-jpq/coq_nvim',
     branch = 'coq'
   },
+  { 'ms-jpq/coq.artifacts', {branch =  'artifacts' }},
+  { 'ms-jpq/coq.thirdparty', {branch =  '3p' }},
   {
     -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
@@ -228,7 +230,7 @@ nnoremap <leader>c f{a<cr><esc>O
 nnoremap <leader>e :Ex<CR>
 nnoremap <leader>f :Rg<cr>
 nnoremap <leader>gd :Gvdiffsplit!<CR>
-nnoremap <leader>i :e ~/.config/nvim/init.vim<CR>
+nnoremap <leader>i :e ~/.config/nvim/init.lua<CR>
 nnoremap <leader>j :call TrimWhitespace()<CR>
 nnoremap <leader>l yiw:Lines <c-r>"<cr>
 nnoremap <leader>o :G blame<CR>
