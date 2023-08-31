@@ -3,24 +3,23 @@
 set -e
 
 my_python_version="3.9.14"
-distro_pm="apt"
+distro_pm="yum"
 dotfiles="$HOME/projects/dotfiles"
  
 mkdir -p $HOME/bin
     
-cd $HOME
-# ZSH runtime config and aliases
-ln -sf $dotfiles/.zshrc .zshrc
-ln -sf $dotfiles/aliases.zsh ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/aliases.zsh
+# ZSH runtime config
+ln -sf $dotfiles/.zshrc $HOME
 
 # Terminal Emulator
-mkdir -p $HOME/.config/alacritty
-ln -sf $dotfiles/alacritty.yml $HOME/.config/alacritty/alacritty.yml
-if [! -d $HOME/.config/alacritty/ ]; then
-    # We use Alacritty's default Linux config directory as our storage location here.
-    mkdir -p ~/.config/alacritty/themes
-    git clone https://github.com/alacritty/alacritty-theme ~/.config/alacritty/themes
-fi
+# TODO(kkelso): this is not valid bash syntax lol
+# if [! -d $HOME/.config/alacritty/ ]; then
+#     mkdir -p $HOME/.config/alacritty
+#     ln -sf $dotfiles/alacritty.yml $HOME/.config/alacritty/alacritty.yml
+#     # We use Alacritty's default Linux config directory as our storage location here.
+#     mkdir -p ~/.config/alacritty/themes
+#     git clone https://github.com/alacritty/alacritty-theme ~/.config/alacritty/themes
+# fi
 
 # Install neovim
 if !(which nvim); then
@@ -53,21 +52,22 @@ if !(which zsh); then
     git clone https://github.com/sindresorhus/pure.git "$HOME/.zsh/pure"
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
     git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+    git clone --depth 1 https://github.com/unixorn/fzf-zsh-plugin.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-zsh-plugin
 fi
 
 # Install pyenv
-if !(which pyenv); then
-    sudo apt-get update; sudo apt-get install make build-essential libssl-dev zlib1g-dev \
-    libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
-    libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
-    
-    git clone https://github.com/pyenv/pyenv.git $HOME/.pyenv
-    
-    exec "$SHELL"
-
-    pyenv install $my_python_version
-    pyenv global $my_python_version
-fi
+# if !(which pyenv); then
+#     sudo apt-get update; sudo apt-get install make build-essential libssl-dev zlib1g-dev \
+#     libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
+#     libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+#     
+#     git clone https://github.com/pyenv/pyenv.git $HOME/.pyenv
+#     
+#     exec "$SHELL"
+# 
+#     pyenv install $my_python_version
+#     pyenv global $my_python_version
+# fi
 
 # Fun packages
 if !(which exa); then

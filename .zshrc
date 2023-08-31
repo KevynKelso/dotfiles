@@ -79,6 +79,7 @@ plugins=(
 
 export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
+source $HOME/projects/dotfiles/aliases.zsh
 
 
 # User configuration
