@@ -163,6 +163,99 @@ vim.o.splitright = true
 vim.o.timeoutlen=180
 vim.o.updatetime=50
 vim.o.conceallevel=0
+vim.cmd [[
+set cmdheight=2
+set colorcolumn=80
+set completeopt=menuone,noinsert,noselect
+set expandtab
+set exrc
+set guicursor=
+set hidden
+set incsearch
+set nobackup
+set noerrorbells
+set nohlsearch
+set noshowmode
+set noswapfile
+set nowrap
+set nu
+set relativenumber
+set shiftwidth=4
+set shortmess+=c
+set signcolumn=yes
+set smartindent
+set splitright
+set tabstop=4 softtabstop=4
+set termguicolors
+set timeoutlen=180
+set undodir=~/.vim/undodir
+set undofile
+set updatetime=50
+set smartcase
+set pumblend=40
+hi PmenuSel blend=0
+hi PmenuSbar guifg=#11f0c3 guibg=#ff00ff
+
+set t_ut=
+set autoread
+
+hi DiagnosticVirtualTextWarn guifg=Gray ctermfg=Gray
+]]
+
+
+vim.cmd [[
+inoremap ! !<c-g>u
+inoremap , ,<c-g>u
+inoremap . .<c-g>u
+inoremap <C-j> <esc>:m .+1<CR>==i
+inoremap <C-k> <esc>:m .-2<CR>==i
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap ? ?<c-g>u
+map <c-_> <Plug>NERDCommenterToggle
+nnoremap <C-n> :bn<CR>
+nnoremap <C-p> :bp<CR>
+nnoremap <Leader>N :cprevious<CR>
+nnoremap <Leader>d :bdelete<CR>
+nnoremap <Leader>n :cnext<CR>
+nnoremap <Leader>w :wa<CR>
+nnoremap <expr> j (v:count > 5 ? "m'" . v:count : "") . 'j'
+nnoremap <expr> k (v:count > 5 ? "m'" . v:count : "") . 'k'
+nnoremap <leader>F :Files<cr>
+nnoremap <leader>I :e ~/.ignore<CR>
+nnoremap <leader>b :Buffers<cr>
+nnoremap <leader>c f{a<cr><esc>O
+nnoremap <leader>e :Ex<CR>
+nnoremap <leader>f :Rg<cr>
+nnoremap <leader>gd :Gvdiffsplit!<CR>
+nnoremap <leader>i :e ~/.config/nvim/init.vim<CR>
+nnoremap <leader>j :call TrimWhitespace()<CR>
+nnoremap <leader>l yiw:Lines <c-r>"<cr>
+nnoremap <leader>o :G blame<CR>
+nnoremap <leader>t yiw:Rg <c-r>"<cr>
+nnoremap <silent><leader>0 :exec '!echo "cb" \| nc localhost 65432'<CR>
+nnoremap <silent><leader>7 :exec '!echo "tt" \| nc localhost 65432'<CR>
+nnoremap <silent><leader>8 :exec '!echo "bb" \| nc localhost 65432'<CR>
+nnoremap <silent><leader>9 :exec '!echo "uu" \| nc localhost 65432'<CR>
+nnoremap <silent>y<Leader>f :let @* = expand("%")<CR>
+nnoremap dl dt)
+nnoremap gdh :diffget //2<CR>
+nnoremap gdl :diffget //3<CR>
+noremap <Leader>s :UltiSnipsEdit<CR>
+tnoremap <Esc> <C-\><C-n>
+vnoremap <leader>k "ky :!echo "<c-R>k" \| nc localhost 10004<CR>
+vnoremap <leader>t y:Rg <c-r>"<cr>
+vnoremap <silent> <c-u> <esc>:Gdiff<cr>gv:diffget<cr><c-w><c-w>ZZ
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
+" running files
+autocmd FileType cpp             nnoremap <buffer> <Leader>v :let @v=@%<CR>:vsp<CR>:term<CR>Ag++ <C-\><C-n>"vpA -o a.out && ./a.out<CR>
+autocmd FileType python          nnoremap <buffer> <Leader>v :let @v=@%<CR>:vsp<CR>:term<CR>Apython <C-\><C-n>"vpA<CR>
+autocmd FileType markdown        nnoremap <buffer> <Leader>v :let @v=@%<CR>:vsp<CR>:term<CR>Aglow <C-\><C-n>"vpA<CR>
+autocmd FileType c               nnoremap <buffer> <Leader>v :let @v=@%<CR>:vsp<CR>:term<CR>Abu<CR>
+]]
+
 
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
@@ -196,11 +289,6 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
--- Leader options
-vim.keymap.set('n', '<leader>F', ':Files<CR>', { silent = true })
-vim.keymap.set('n', '<leader>f', ':Rg<CR>', { silent = true })
-vim.keymap.set('n', '<leader>w', ':wa<CR>', { silent = true })
-
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
@@ -211,6 +299,13 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = highlight_group,
   pattern = '*',
 })
+
+-- [[[ Configrue COQ ]]
+vim.g.coq_settings = {
+  display = { icons = { mode = 'none'}, pum = { fast_close = false } },
+  auto_start = 'shut-up',
+}
+require("coq")
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -338,8 +433,21 @@ end
 --
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
+local clangd_flags = {
+    "--background-index",
+    "--cross-file-rename",
+    "--clang-tidy",
+    "--header-insertion=never",
+    "--compile-commands-dir=/home/kkelso/projects/9305/kevyn",
+    --"--limit-references=500",
+    --"--limit-results=50",
+    --"--project-root=/home/kkelso/projects/9305",
+    --"--remote-index-address=''",
+    "--all-scopes-completion",
+}
+
 local servers = {
-  clangd = {},
+  clangd = { cmd = { "clangd", unpack(clangd_flags) }},
   -- gopls = {},
   pyright = {},
   -- rust_analyzer = {},
