@@ -157,8 +157,6 @@ vim.o.exrc = true
 vim.o.hidden = true
 vim.o.incsearch = true
 vim.o.wrap = false
-vim.o.number = true
-vim.o.relativenumber = true
 vim.o.shiftwidth = 4
 vim.o.smartindent = true
 vim.o.splitright = true
@@ -180,7 +178,7 @@ set nohlsearch
 set noshowmode
 set noswapfile
 set nowrap
-set nu
+set number
 set relativenumber
 set shiftwidth=4
 set shortmess+=c
