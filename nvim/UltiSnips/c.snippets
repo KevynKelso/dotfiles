@@ -57,13 +57,22 @@ if (!PML_DidBootFromSleep())
 }
 endsnippet
 
-snippet gpio_radio "" A
+snippet gpio_rx "" A
 uint8_t gpio_rx_pin = 6;
 GPIO_DisablePullDown(gpio_rx_pin);
 GPIO_DisablePullUp(gpio_rx_pin);
 GPIO_SetOutputPinFunction(gpio_rx_pin, GPIO_PIN_FUNC_OUT_RX_ON);
 GPIO_DisableInput(gpio_rx_pin);
 GPIO_EnableOutput(gpio_rx_pin);
+endsnippet
+
+snippet gpio_tx "" A
+uint8_t gpio_tx_pin = 6;
+GPIO_DisablePullDown(gpio_tx_pin);
+GPIO_DisablePullUp(gpio_tx_pin);
+GPIO_SetOutputPinFunction(gpio_tx_pin, GPIO_PIN_FUNC_OUT_TX_ON);
+GPIO_DisableInput(gpio_tx_pin);
+GPIO_EnableOutput(gpio_tx_pin);
 endsnippet
 
 snippet gpio_set_raw "" A
