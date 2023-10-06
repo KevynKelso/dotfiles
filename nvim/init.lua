@@ -29,6 +29,13 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- [[[ Configrue COQ ]]
+vim.g.coq_settings = {
+    display = { icons = { mode = 'none' }, pum = { fast_close = false } },
+    -- auto_start = 'shut-up',
+    auto_start = true,
+}
+
 -- NOTE: Here is where you install your plugins.
 --  You can configure plugins using the `config` key.
 --
@@ -295,12 +302,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     pattern = '*',
 })
 
--- [[[ Configrue COQ ]]
-vim.g.coq_settings = {
-    display = { icons = { mode = 'none' }, pum = { fast_close = false } },
-    -- auto_start = 'shut-up',
-    auto_start = true,
-}
+-- See https://github.com/ms-jpq/coq_nvim/issues/403
 require("coq")
 
 -- [[ Configure Lualine ]]
