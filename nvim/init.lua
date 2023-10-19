@@ -162,9 +162,14 @@ vim.o.wrap = false
 vim.o.shiftwidth = 4
 vim.o.smartindent = true
 vim.o.splitright = true
-vim.o.timeoutlen = 180
-vim.o.updatetime = 50
-vim.o.conceallevel = 0
+vim.o.timeoutlen=180
+vim.o.updatetime=50
+vim.o.conceallevel=0
+-- Sync clipboard between OS and Neovim.
+--  Remove this option if you want your OS clipboard to remain independent.
+--  See `:help 'clipboard'`
+vim.o.clipboard = 'unnamedplus'
+
 vim.cmd [[
 set cmdheight=2
 set colorcolumn=80
@@ -259,10 +264,6 @@ autocmd FileType c               nnoremap <buffer> <Leader>v :let @v=@%<CR>:vsp<
 ]]
 
 
--- Sync clipboard between OS and Neovim.
---  Remove this option if you want your OS clipboard to remain independent.
---  See `:help 'clipboard'`
-vim.o.clipboard = 'unnamedplus'
 
 -- Enable break indent
 vim.o.breakindent = true
