@@ -171,6 +171,9 @@ vim.o.conceallevel=0
 vim.o.clipboard = 'unnamedplus'
 
 vim.cmd [[
+" Disable the mouse input
+set mouse=
+
 set cmdheight=2
 set colorcolumn=80
 set completeopt=menuone,noinsert,noselect
