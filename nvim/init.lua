@@ -135,9 +135,9 @@ require('lazy').setup({
 vim.cmd [[colorscheme gruvbox-material]]
 vim.cmd [[
 let g:fzf_preview_window = ['hidden,right,50%,<70(up,40%)', 'ctrl-p']
-command! -bang -nargs=* Rg
-  \ call fzf#vim#grep(
-  \   'rg-ripgrep --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
+command! -bang -nargs=* Ag
+  \ call fzf#vim#ag(
+  \   <q-args>, $AG_DEFAULT_OPTIONS,
   \   fzf#vim#with_preview(), <bang>0)
 
 command! -bang -nargs=? -complete=dir Files
@@ -236,13 +236,13 @@ nnoremap <leader>I :e ~/.ignore<CR>
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>c f{a<cr><esc>O
 nnoremap <leader>E :Ex<CR>
-nnoremap <leader>f :Rg<cr>
+nnoremap <leader>f :Ag<cr>
 nnoremap <leader>gd :Gvdiffsplit!<CR>
 nnoremap <leader>i :e ~/.config/nvim/init.lua<CR>
 nnoremap <leader>j :call TrimWhitespace()<CR>
 nnoremap <leader>l yiw:Lines <c-r>"<cr>
 nnoremap <leader>o :G blame<CR>
-nnoremap <leader>t yiw:Rg <c-r>"<cr>
+nnoremap <leader>t yiw:Ag <c-r>"<cr>
 nnoremap <silent><leader>0 :exec '!echo "cb" \| nc localhost 65432'<CR>
 nnoremap <silent><leader>7 :exec '!echo "tt" \| nc localhost 65432'<CR>
 nnoremap <silent><leader>8 :exec '!echo "bb" \| nc localhost 65432'<CR>
@@ -254,7 +254,7 @@ nnoremap gdl :diffget //3<CR>
 noremap <Leader>s :UltiSnipsEdit<CR>
 tnoremap <Esc> <C-\><C-n>
 vnoremap <leader>k "ky :!echo "<c-R>k" \| nc localhost 10004<CR>
-vnoremap <leader>t y:Rg <c-r>"<cr>
+vnoremap <leader>t y:Ag <c-r>"<cr>
 vnoremap <silent> <c-u> <esc>:Gdiff<cr>gv:diffget<cr><c-w><c-w>ZZ
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
