@@ -33,7 +33,7 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.coq_settings = {
     display = { icons = { mode = 'none' }, pum = { fast_close = false } },
     -- auto_start = 'shut-up',
-    auto_start = true,
+    auto_start = 'shut-up',
 }
 
 -- NOTE: Here is where you install your plugins.
