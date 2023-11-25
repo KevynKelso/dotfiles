@@ -1,20 +1,7 @@
---[[
-  If you don't know anything about Lua, I recommend taking some time to read through
-  a guide. One possible example:
-  - https://learnxinyminutes.com/docs/lua/
-
-
-  And then you can explore or search through `:help lua-guide`
-  - https://neovim.io/doc/user/lua-guide.html
---]]
--- Set <space> as the leader key
--- See `:help mapleader`
---  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Install package manager
---    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
@@ -29,21 +16,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- [[[ Configrue COQ ]]
-vim.g.coq_settings = {
-    display = { icons = { mode = 'none' }, pum = { fast_close = false } },
-    -- auto_start = 'shut-up',
-    auto_start = 'shut-up',
-}
-
--- NOTE: Here is where you install your plugins.
---  You can configure plugins using the `config` key.
---
---  You can also configure plugins after the setup call,
---    as they will be available in your neovim runtime.
 require('lazy').setup({
-    -- NOTE: First, some plugins that don't require any configuration
-    -- Legacy plugins from init.vim
     'SirVer/ultisnips',
     'junegunn/fzf',
     'junegunn/fzf.vim',
@@ -56,8 +29,6 @@ require('lazy').setup({
     -- Detect tabstop and shiftwidth automatically
     'tpope/vim-sleuth',
 
-    -- NOTE: This is where your plugins related to LSP can be installed.
-    --  The configuration is done below. Search for lspconfig to find it below.
     {
         -- LSP Configuration & Plugins
         'neovim/nvim-lspconfig',
@@ -102,26 +73,7 @@ require('lazy').setup({
         -- See `:help lualine.txt`
     },
 
-    {
-        -- Add indentation guides even on blank lines
-        'lukas-reineke/indent-blankline.nvim',
-        -- Enable `lukas-reineke/indent-blankline.nvim`
-        -- See `:help indent_blankline.txt`
-        opts = {
-            char = '┊',
-            show_trailing_blankline_indent = false,
-        },
-    },
-
-    -- "gc" to comment visual regions/lines
-    { 'numToStr/Comment.nvim', opts = {} },
-
-    {
-        'ms-jpq/coq_nvim',
-        branch = 'coq'
-    },
-    { 'ms-jpq/coq.artifacts',  branch = 'artifacts' },
-    { 'ms-jpq/coq.thirdparty', branch = '3p' },
+    { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
     {
         -- Highlight, edit, and navigate code
         'nvim-treesitter/nvim-treesitter',
@@ -130,6 +82,13 @@ require('lazy').setup({
         },
         build = ':TSUpdate',
     },
+    { 'hrsh7th/cmp-nvim-lsp' },
+    { 'hrsh7th/cmp-buffer' },
+    { 'hrsh7th/cmp-path' },
+    { 'hrsh7th/cmp-cmdline' },
+    { 'hrsh7th/nvim-cmp' },
+    { 'quangnguyen30192/cmp-nvim-ultisnips' },
+    { 'petertriho/cmp-git' },
 }, {})
 
 vim.cmd [[colorscheme gruvbox-material]]
@@ -162,9 +121,9 @@ vim.o.wrap = false
 vim.o.shiftwidth = 4
 vim.o.smartindent = true
 vim.o.splitright = true
-vim.o.timeoutlen=180
-vim.o.updatetime=50
-vim.o.conceallevel=0
+vim.o.timeoutlen = 180
+vim.o.updatetime = 50
+vim.o.conceallevel = 0
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
@@ -270,20 +229,13 @@ autocmd FileType c               nnoremap <buffer> <Leader>v :let @v=@%<CR>:vsp<
 
 -- Enable break indent
 vim.o.breakindent = true
-
--- Save undo history
-vim.o.undofile = true
-
 -- Case-insensitive searching UNLESS \C or capital in search
 vim.o.ignorecase = true
 vim.o.smartcase = true
-
 -- Keep signcolumn on by default
 vim.wo.signcolumn = 'yes'
-
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect,noinsert'
-
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 
@@ -305,9 +257,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     group = highlight_group,
     pattern = '*',
 })
-
--- See https://github.com/ms-jpq/coq_nvim/issues/403
-require("coq")
 
 -- [[ Configure Lualine ]]
 require('lualine').setup {
@@ -378,7 +327,7 @@ require('nvim-treesitter.configs').setup {
     ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
-    auto_install = false,
+    auto_install = true,
 
     highlight = { enable = true },
     indent = { enable = true },
@@ -442,6 +391,62 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous dia
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
+
+-- Set up nvim-cmp.
+local cmp = require 'cmp'
+
+cmp.setup({
+    snippet = {
+        -- REQUIRED - you must specify a snippet engine
+        expand = function(args)
+            vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+        end,
+    },
+    window = {
+        -- completion = cmp.config.window.bordered(),
+        -- documentation = cmp.config.window.bordered(),
+    },
+    mapping = cmp.mapping.preset.insert({
+        ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<C-e>'] = cmp.mapping.abort(),
+        ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    }),
+    sources = cmp.config.sources({
+        { name = 'nvim_lsp' },
+        { name = 'ultisnips' }, -- For ultisnips users.
+    }, {
+        { name = 'buffer' },
+    })
+})
+
+-- Set configuration for specific filetype.
+cmp.setup.filetype('gitcommit', {
+    sources = cmp.config.sources({
+        { name = 'git' }, -- You can specify the `git` source if [you were installed it](https://github.com/petertriho/cmp-git).
+    }, {
+        { name = 'buffer' },
+    })
+})
+
+-- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline({ '/', '?' }, {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = {
+        { name = 'buffer' }
+    }
+})
+
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = cmp.config.sources({
+        { name = 'path' }
+    }, {
+        { name = 'cmdline' }
+    })
+})
 
 -- [[ Configure LSP ]]
 vim.lsp.set_log_level("off")
@@ -513,9 +518,9 @@ local clangd_flags = {
 
 local servers = {
     clangd = { cmd = { "clangd", unpack(clangd_flags) } },
-    -- gopls = {},
-    pyright = {},
-    -- rust_analyzer = {},
+    pyright = {
+        python = { analysis = { typeCheckingMode = "basic", diagnosticMode = "workspace" } }
+    }, --TODO: pyright config
     tsserver = {},
     html = { filetypes = { 'html', 'twig', 'hbs' } },
 
@@ -537,6 +542,7 @@ mason_lspconfig.setup {
     ensure_installed = vim.tbl_keys(servers),
 }
 
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 mason_lspconfig.setup_handlers {
     function(server_name)
         require('lspconfig')[server_name].setup {
@@ -547,6 +553,3 @@ mason_lspconfig.setup_handlers {
         }
     end
 }
-
--- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et

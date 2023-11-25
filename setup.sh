@@ -63,7 +63,7 @@ if !(which pyenv); then
     
     git clone https://github.com/pyenv/pyenv.git $HOME/.pyenv
     
-    exec "$SHELL"
+    # exec "$SHELL"
 
     pyenv install $my_python_version
     pyenv global $my_python_version
