@@ -167,7 +167,6 @@ hi PmenuSel blend=0
 hi PmenuSbar guifg=#11f0c3 guibg=#ff00ff
 
 set t_ut=
-set autoread
 
 hi DiagnosticVirtualTextWarn guifg=Gray ctermfg=Gray
 ]]
