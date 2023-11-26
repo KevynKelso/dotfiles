@@ -89,6 +89,7 @@ require('lazy').setup({
     { 'hrsh7th/nvim-cmp' },
     { 'quangnguyen30192/cmp-nvim-ultisnips' },
     { 'petertriho/cmp-git' },
+    { 'davidsierradz/cmp-conventionalcommits' },
 }, {})
 
 vim.cmd [[colorscheme gruvbox-material]]
@@ -425,6 +426,7 @@ cmp.setup({
 cmp.setup.filetype('gitcommit', {
     sources = cmp.config.sources({
         { name = 'git' }, -- You can specify the `git` source if [you were installed it](https://github.com/petertriho/cmp-git).
+        { name = 'conventionalcommits' },
     }, {
         { name = 'buffer' },
     })
