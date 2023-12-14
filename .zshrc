@@ -5,7 +5,7 @@ export PATH="/home/kkelso/projects/Extra_Scripts/bin:/home/kkelso/projects/ARC_2
 export METAWARE_LOCAL_VERSION="2022.09"
 export EDITOR="nvim"
 
-export AG_DEFAULT_OPTIONS="--path-to-ignore ~/.ignore --stats --workers 24"
+export AG_DEFAULT_OPTIONS="--path-to-ignore ~/.ignore --workers 24"
 export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'
 
 setopt autocd
