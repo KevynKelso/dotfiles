@@ -183,6 +183,8 @@ vim.o.termguicolors = true
 -- [[ Basic Keymaps ]]
 -- See `:help vim.keymap.set()`
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+vim.keymap.set("n", "<C-i>", "<C-i>zz", { desc = "Jump list centering" })
+vim.keymap.set("n", "<C-o>", "<C-o>zz", { desc = "Jump list centering" })
 
 -- Remap for dealing with word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
