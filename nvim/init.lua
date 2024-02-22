@@ -40,10 +40,7 @@ require('lazy').setup{
 vim.cmd [[colorscheme gruvbox-material]]
 vim.cmd [[
 let g:fzf_preview_window = ['hidden,right,50%,<70(up,40%)', 'ctrl-p']
-command! -bang -nargs=* Ag
-  \ call fzf#vim#ag(
-  \   <q-args>, $AG_DEFAULT_OPTIONS,
-  \   fzf#vim#with_preview(), <bang>0)
+command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, $AG_DEFAULT_OPTIONS, fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)
 
 command! -bang -nargs=? -complete=dir Files
     \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--layout=reverse', '--info=inline']}), <bang>0)
