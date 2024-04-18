@@ -1,96 +1,41 @@
+-- Leader keys setup
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
--- Install package manager
---    `:help lazy.nvim.txt` for more info
-local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
+-- Install and configure lazy.nvim package manager
+local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
-    vim.fn.system {
-        'git',
-        'clone',
-        '--filter=blob:none',
-        'https://github.com/folke/lazy.nvim.git',
-        '--branch=stable', -- latest stable release
+    vim.fn.system{
+        'git', 'clone', '--filter=blob:none',
+        'https://github.com/folke/lazy.nvim.git', '--branch=stable',
         lazypath,
     }
 end
 vim.opt.rtp:prepend(lazypath)
 
-require('lazy').setup({
-    'SirVer/ultisnips',
-    'junegunn/fzf',
-    'junegunn/fzf.vim',
-    'sainnhe/gruvbox-material',
-
-    -- Git related plugins
-    'tpope/vim-fugitive',
-    'tpope/vim-rhubarb',
-
-    -- Detect tabstop and shiftwidth automatically
-    'tpope/vim-sleuth',
-
+require('lazy').setup{
+    'SirVer/ultisnips', 'junegunn/fzf', 'junegunn/fzf.vim', 'sainnhe/gruvbox-material',
+    'tpope/vim-fugitive', 'tpope/vim-rhubarb', 'tpope/vim-sleuth',
     {
-        -- LSP Configuration & Plugins
         'neovim/nvim-lspconfig',
         dependencies = {
-            -- Automatically install LSPs to stdpath for neovim
             { 'williamboman/mason.nvim', config = true },
             'williamboman/mason-lspconfig.nvim',
-
-            -- Useful status updates for LSP
-            -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-            { 'j-hui/fidget.nvim',       tag = 'legacy', opts = {} },
-
-            -- Additional lua configuration, makes nvim stuff amazing!
+            { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
             'folke/neodev.nvim',
         },
     },
+    { 'lewis6991/gitsigns.nvim', opts = { signs = { add = { text = '+' }, change = { text = '~' }, delete = { text = '_' }, topdelete = { text = '‾' }, changedelete = { text = '~' }, }, }, },
+    'nvim-lualine/lualine.nvim',
+    { "lukas-reineke/indent-blankline.nvim", main='ibl', opts = {} },
     {
-        -- Adds git related signs to the gutter, as well as utilities for managing changes
-        'lewis6991/gitsigns.nvim',
-        opts = {
-            -- See `:help gitsigns.txt`
-            signs = {
-                add = { text = '+' },
-                change = { text = '~' },
-                delete = { text = '_' },
-                topdelete = { text = '‾' },
-                changedelete = { text = '~' },
-            },
-            on_attach = function(bufnr)
-                vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk,
-                    { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
-                vim.keymap.set('n', '<leader>gn', require('gitsigns').next_hunk,
-                    { buffer = bufnr, desc = '[G]o to [N]ext Hunk' })
-                vim.keymap.set('n', '<leader>ph', require('gitsigns').preview_hunk,
-                    { buffer = bufnr, desc = '[P]review [H]unk' })
-            end,
-        },
-    },
-    {
-        -- Set lualine as statusline
-        'nvim-lualine/lualine.nvim',
-        -- See `:help lualine.txt`
-    },
-
-    { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
-    {
-        -- Highlight, edit, and navigate code
         'nvim-treesitter/nvim-treesitter',
-        dependencies = {
-            'nvim-treesitter/nvim-treesitter-textobjects',
-        },
+        dependencies = {'nvim-treesitter/nvim-treesitter-textobjects'},
         build = ':TSUpdate',
     },
-    { 'hrsh7th/cmp-nvim-lsp' },
-    { 'hrsh7th/cmp-buffer' },
-    { 'hrsh7th/cmp-path' },
-    { 'hrsh7th/cmp-cmdline' },
-    { 'hrsh7th/nvim-cmp' },
-    { 'quangnguyen30192/cmp-nvim-ultisnips' },
-    { 'petertriho/cmp-git' },
-    { 'davidsierradz/cmp-conventionalcommits' },
-}, {})
+    'hrsh7th/nvim-cmp', 'hrsh7th/cmp-nvim-lsp','hrsh7th/cmp-buffer','hrsh7th/cmp-path','hrsh7th/cmp-cmdline',  'quangnguyen30192/cmp-nvim-ultisnips',
+    'petertriho/cmp-git', 'davidsierradz/cmp-conventionalcommits',
+}
 
 vim.cmd [[colorscheme gruvbox-material]]
 vim.cmd [[
@@ -166,8 +111,6 @@ set pumblend=40
 hi PmenuSel blend=0
 hi PmenuSbar guifg=#11f0c3 guibg=#ff00ff
 
-set t_ut=
-
 hi DiagnosticVirtualTextWarn guifg=Gray ctermfg=Gray
 ]]
 
@@ -223,6 +166,7 @@ autocmd FileType cpp             nnoremap <buffer> <Leader>v :let @v=@%<CR>:vsp<
 autocmd FileType python          nnoremap <buffer> <Leader>v :let @v=@%<CR>:vsp<CR>:term<CR>Apython <C-\><C-n>"vpA<CR>
 autocmd FileType markdown        nnoremap <buffer> <Leader>v :let @v=@%<CR>:vsp<CR>:term<CR>Aglow <C-\><C-n>"vpA<CR>
 autocmd FileType c               nnoremap <buffer> <Leader>v :let @v=@%<CR>:vsp<CR>:term<CR>Abu<CR>
+let &runtimepath.=',/home/vyn/projects/pclint-nvim'
 ]]
 
 
