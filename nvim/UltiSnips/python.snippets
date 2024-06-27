@@ -58,3 +58,14 @@ plt.ylabel("loss")
 plt.plot(df["ae_loss"])
 plt.show()
 endsnippet
+
+snippet simple_plot "A simple matplotlib line plot" b
+import matplotlib.pyplot as plt
+
+data = [1,2,3]
+fig, ax = plt.subplots()
+ax.plot(data)
+ax.set(xlabel="x-label", ylabel="y-label", title="Sample Title")
+ax.grid()
+fig.savefig("test.png")
+endsnippet
