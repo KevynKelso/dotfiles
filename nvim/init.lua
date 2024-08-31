@@ -47,63 +47,40 @@ command! -bang -nargs=? -complete=dir Files
 ]]
 vim.cmd [[ hi DiagnosticVirtualTextWarn guifg=Gray ctermfg=Gray ]]
 
--- [[ Setting options ]]
--- See `:help vim.o`
--- NOTE: You can change these options as you wish!
-
--- Set highlight on search
-vim.o.hlsearch = false
-vim.o.cmdheight = 2
-vim.opt.colorcolumn = "80"
+-- UI settings
+vim.cmd [[colorscheme gruvbox-material]]
 vim.o.completeopt = "menuone,noinsert,noselect"
-vim.o.expandtab = true
-vim.o.exrc = true
-vim.o.hidden = true
-vim.o.incsearch = true
-vim.o.wrap = false
-vim.o.shiftwidth = 4
-vim.o.smartindent = true
-vim.o.splitright = true
-vim.o.timeoutlen = 180
-vim.o.updatetime = 50
-vim.o.conceallevel = 0
--- Sync clipboard between OS and Neovim.
---  Remove this option if you want your OS clipboard to remain independent.
---  See `:help 'clipboard'`
 vim.o.clipboard = 'unnamedplus'
+vim.opt.termguicolors = true
+vim.wo.signcolumn = 'yes'
+
+-- General settings
+vim.o.hlsearch = false
+vim.o.hidden = true
+vim.o.errorbells = false
+vim.o.wrap = false
+vim.o.number = true
+vim.o.relativenumber = true
+vim.o.showmode = false
+vim.o.updatetime = 50
+vim.o.timeoutlen = 180
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+vim.opt.expandtab = true
+vim.opt.smartindent = true
+vim.o.cmdheight = 1
+vim.opt.colorcolumn = "80"
+vim.o.exrc = true
+vim.o.incsearch = true
+vim.o.splitright = true
+vim.o.conceallevel = 0
+vim.o.smartcase = true
 
 vim.cmd [[
 " Disable the mouse input
 set mouse=
 
-set cmdheight=2
-set colorcolumn=80
-set completeopt=menuone,noinsert,noselect
-set expandtab
-set exrc
 set guicursor=
-set hidden
-set incsearch
-set nobackup
-set noerrorbells
-set nohlsearch
-set noshowmode
-set noswapfile
-set nowrap
-set number
-set relativenumber
-set shiftwidth=4
-set shortmess+=c
-set signcolumn=yes
-set smartindent
-set splitright
-set tabstop=4 softtabstop=4
-set termguicolors
-set timeoutlen=180
-set undodir=~/.vim/undodir
-set undofile
-set updatetime=50
-set smartcase
 set pumblend=40
 hi PmenuSel blend=0
 hi PmenuSbar guifg=#11f0c3 guibg=#ff00ff
@@ -172,13 +149,8 @@ let &runtimepath.=',/home/vyn/projects/pclint-nvim'
 vim.o.breakindent = true
 -- Case-insensitive searching UNLESS \C or capital in search
 vim.o.ignorecase = true
-vim.o.smartcase = true
--- Keep signcolumn on by default
-vim.wo.signcolumn = 'yes'
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect,noinsert'
--- NOTE: You should make sure your terminal supports this
-vim.o.termguicolors = true
 
 -- [[ Basic Keymaps ]]
 -- See `:help vim.keymap.set()`
