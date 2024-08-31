@@ -35,6 +35,13 @@ require('lazy').setup{
     },
     'hrsh7th/nvim-cmp', 'hrsh7th/cmp-nvim-lsp','hrsh7th/cmp-buffer','hrsh7th/cmp-path','hrsh7th/cmp-cmdline',  'quangnguyen30192/cmp-nvim-ultisnips',
     'petertriho/cmp-git', 'davidsierradz/cmp-conventionalcommits',
+    { 'rust-lang/rust.vim' },
+    {
+        'mrcjkb/rustaceanvim',
+        version = '^3',
+        ft = { 'rust' },
+    }
+    -- don't forget rustup component add rust-analyzer
 }
 
 vim.cmd [[colorscheme gruvbox-material]]
