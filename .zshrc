@@ -1,7 +1,7 @@
 ZSH_THEME=""
 ZSH_TMUX_AUTOSTART=true
 
-export PATH="/home/kkelso/projects/Extra_Scripts/bin:/home/kkelso/projects/ARC_2022_09_EMM/MetaWare/arc/bin/:/home/kkelso/projects/clangd_15.0.6/bin:/home/kkelso/.local/bin/:/home/kkelso/bin:/apps/xilinx/Xilinx_Vivado_SDK_Web_2018.3_1207_2324/SDK/2018.3/bin:/home/kkelso/go/bin:$PATH:$HOME/.pyenv/bin"
+export PATH="/home/kkelso/projects/Extra_Scripts/bin:/home/kkelso/projects/ARC_2022_09_EMM/MetaWare/arc/bin/:/home/kkelso/projects/clangd_15.0.6/bin:/home/kkelso/.local/bin/:/home/vyn/.local/bin:/home/kkelso/bin:/apps/xilinx/Xilinx_Vivado_SDK_Web_2018.3_1207_2324/SDK/2018.3/bin:/home/kkelso/go/bin:$PATH:$HOME/.pyenv/bin"
 export METAWARE_LOCAL_VERSION="2022.09"
 export EDITOR="nvim"
 
@@ -49,6 +49,8 @@ export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
 # For a full list of active aliases, run `alias`.
 source $HOME/projects/dotfiles/aliases.zsh
+# private API keys
+source $HOME/.env
 
 
 # Theme configuration
@@ -63,3 +65,7 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 if command -v pyenv 1>/dev/null 2>&1; then
  eval "$(pyenv init -)"
 fi
+
+# export TERM=alacritty
+export SUMO_HOME="/usr/share/sumo"
+# export LIBSUMO_AS_TRACI=1
