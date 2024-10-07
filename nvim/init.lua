@@ -558,7 +558,7 @@ local clangd_flags = {
 local servers = {
     clangd = { cmd = { "clangd", unpack(clangd_flags) } },
     pyright = {
-        python = { analysis = { typeCheckingMode = "basic", diagnosticMode = "workspace" } }
+        python = { analysis = { typeCheckingMode = "basic", diagnosticMode = "workspace", ignore = ".pyenv" } }
     }, --TODO: pyright config
     tsserver = {},
     html = { filetypes = { 'html', 'twig', 'hbs' } },
@@ -580,6 +580,7 @@ local servers = {
             -- Defaults to error.
             diagnosticSeverity = "Hint"
         }
+    },
     cmake = {
         cmd = { "cmake-language-server" },
         filetypes = { 'CMakeLists.txt', "cmake" },
