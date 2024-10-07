@@ -13,9 +13,44 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require('lazy').setup{
-    'SirVer/ultisnips', 'junegunn/fzf', 'junegunn/fzf.vim', 'sainnhe/gruvbox-material',
-    'tpope/vim-fugitive', 'tpope/vim-rhubarb', 'tpope/vim-sleuth',
+require('lazy').setup({
+    'SirVer/ultisnips',
+    'junegunn/fzf',
+    'junegunn/fzf.vim',
+    'sainnhe/gruvbox-material',
+
+    {
+        "mfussenegger/nvim-lint",
+        event = {
+            "BufReadPre",
+            "BufNewFile",
+        },
+        config = function()
+            local lint = require("lint")
+
+            lint.linters_by_ft = {
+                rst = { "rstcheck" },
+                python = { "pylint" },
+            }
+
+            local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
+
+            vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+                group = lint_augroup,
+                callback = function()
+                    lint.try_lint()
+                end,
+            })
+        end,
+    },
+
+    -- Git related plugins
+    'tpope/vim-fugitive',
+    'tpope/vim-rhubarb',
+
+    -- Detect tabstop and shiftwidth automatically
+    'tpope/vim-sleuth',
+
     {
         'neovim/nvim-lspconfig',
         dependencies = {
@@ -29,12 +64,54 @@ require('lazy').setup{
     'nvim-lualine/lualine.nvim',
     { "lukas-reineke/indent-blankline.nvim", main='ibl', opts = {} },
     {
+        -- Adds git related signs to the gutter, as well as utilities for managing changes
+        'lewis6991/gitsigns.nvim',
+        opts = {
+            -- See `:help gitsigns.txt`
+            signs = {
+                add = { text = '+' },
+                change = { text = '~' },
+                delete = { text = '_' },
+                topdelete = { text = '‾' },
+                changedelete = { text = '~' },
+            },
+            on_attach = function(bufnr)
+                vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk,
+                    { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
+                vim.keymap.set('n', '<leader>gn', require('gitsigns').next_hunk,
+                    { buffer = bufnr, desc = '[G]o to [N]ext Hunk' })
+                vim.keymap.set('n', '<leader>ph', require('gitsigns').preview_hunk,
+                    { buffer = bufnr, desc = '[P]review [H]unk' })
+            end,
+        },
+    },
+    {
+        -- Set lualine as statusline
+        'nvim-lualine/lualine.nvim',
+        -- See `:help lualine.txt`
+    },
+
+    { "lukas-reineke/indent-blankline.nvim",  main = "ibl", opts = {} },
+    {
+        -- Highlight, edit, and navigate code
         'nvim-treesitter/nvim-treesitter',
         dependencies = {'nvim-treesitter/nvim-treesitter-textobjects'},
         build = ':TSUpdate',
     },
-    'hrsh7th/nvim-cmp', 'hrsh7th/cmp-nvim-lsp','hrsh7th/cmp-buffer','hrsh7th/cmp-path','hrsh7th/cmp-cmdline',  'quangnguyen30192/cmp-nvim-ultisnips',
-    'petertriho/cmp-git', 'davidsierradz/cmp-conventionalcommits',
+    { 'hrsh7th/cmp-nvim-lsp' },
+    { 'hrsh7th/cmp-buffer' },
+    { 'hrsh7th/cmp-path' },
+    { 'hrsh7th/cmp-cmdline' },
+    { 'hrsh7th/nvim-cmp' },
+    { 'quangnguyen30192/cmp-nvim-ultisnips' },
+    { 'petertriho/cmp-git' },
+    { 'davidsierradz/cmp-conventionalcommits' },
+    {
+        "iamcco/markdown-preview.nvim",
+        cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+        ft = { "markdown" },
+        build = function() vim.fn["mkdp#util#install"]() end,
+    },
     { 'rust-lang/rust.vim' },
     {
         'mrcjkb/rustaceanvim',
@@ -42,20 +119,32 @@ require('lazy').setup{
         ft = { 'rust' },
     }
     -- don't forget rustup component add rust-analyzer
-}
+}, {})
 
 vim.cmd [[colorscheme gruvbox-material]]
 vim.cmd [[
 let g:fzf_preview_window = ['hidden,right,50%,<70(up,40%)', 'ctrl-p']
-command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, $AG_DEFAULT_OPTIONS, fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)
+command! -bang -nargs=* Ag
+  \ call fzf#vim#ag(
+  \   <q-args>, $AG_DEFAULT_OPTIONS,
+  \   fzf#vim#with_preview(), <bang>0)
 
 command! -bang -nargs=? -complete=dir Files
     \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--layout=reverse', '--info=inline']}), <bang>0)
 ]]
 vim.cmd [[ hi DiagnosticVirtualTextWarn guifg=Gray ctermfg=Gray ]]
 
--- UI settings
-vim.cmd [[colorscheme gruvbox-material]]
+-- [[ Setting options ]]
+-- See `:help vim.o`
+-- NOTE: You can change these options as you wish!
+
+-- Set highlight on search
+vim.o.hlsearch = false
+vim.o.cmdheight = 1
+-- vim.o.ruler = false
+-- vim.o.showcmd = false
+-- vim.o.showcmdloc = "last"
+vim.opt.colorcolumn = "80"
 vim.o.completeopt = "menuone,noinsert,noselect"
 vim.o.clipboard = 'unnamedplus'
 vim.opt.termguicolors = true
@@ -108,6 +197,10 @@ inoremap ? ?<c-g>u
 map <c-_> <Plug>NERDCommenterToggle
 nnoremap <C-n> :bn<CR>
 nnoremap <C-p> :bp<CR>
+nnoremap <C-h> :tabn<CR>
+"nnoremap : :silent
+nnoremap n nzz
+nnoremap N Nzz
 nnoremap <Leader>N :cprevious<CR>
 nnoremap <Leader>d :bdelete<CR>
 nnoremap <Leader>n :cnext<CR>
@@ -135,6 +228,7 @@ nnoremap dl dt)
 nnoremap gdh :diffget //2<CR>
 nnoremap gdl :diffget //3<CR>
 noremap <Leader>s :UltiSnipsEdit<CR>
+nnoremap <Leader>g :G<CR>
 tnoremap <Esc> <C-\><C-n>
 vnoremap <leader>k "ky :!echo "<c-R>k" \| nc localhost 10004<CR>
 vnoremap <leader>t y:Ag <c-r>"<cr>
@@ -147,7 +241,17 @@ autocmd FileType cpp             nnoremap <buffer> <Leader>v :let @v=@%<CR>:vsp<
 autocmd FileType python          nnoremap <buffer> <Leader>v :let @v=@%<CR>:vsp<CR>:term<CR>Apython <C-\><C-n>"vpA<CR>
 autocmd FileType markdown        nnoremap <buffer> <Leader>v :let @v=@%<CR>:vsp<CR>:term<CR>Aglow <C-\><C-n>"vpA<CR>
 autocmd FileType c               nnoremap <buffer> <Leader>v :let @v=@%<CR>:vsp<CR>:term<CR>Abu<CR>
-let &runtimepath.=',/home/vyn/projects/pclint-nvim'
+
+autocmd FileType netrw nnoremap ? :help netrw-quickmap<CR>
+function! Scratch()
+    split
+    noswapfile hide enew
+    setlocal buftype=nofile
+    setlocal bufhidden=hide
+    "setlocal nobuflisted
+    "lcd ~
+    file scratch
+endfunction
 ]]
 
 
@@ -156,8 +260,11 @@ let &runtimepath.=',/home/vyn/projects/pclint-nvim'
 vim.o.breakindent = true
 -- Case-insensitive searching UNLESS \C or capital in search
 vim.o.ignorecase = true
--- Set completeopt to have a better completion experience
-vim.o.completeopt = 'menuone,noselect,noinsert'
+vim.o.smartcase = true
+-- Keep signcolumn on by default
+vim.wo.signcolumn = 'yes'
+-- NOTE: You should make sure your terminal supports this
+vim.o.termguicolors = true
 
 -- [[ Basic Keymaps ]]
 -- See `:help vim.keymap.set()`
@@ -184,7 +291,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 require('lualine').setup {
     options = {
         icons_enabled = false,
-        theme = 'auto',
+        theme = 'gruvbox-material',
         component_separators = '|',
         section_separators = '',
         disabled_filetypes = {
@@ -202,13 +309,13 @@ require('lualine').setup {
     },
     sections = {
         lualine_a = { 'mode' },
-        lualine_b = { 'branch', 'diff', 'diagnostics' },
+        lualine_b = { 'branch', 'diagnostics', },
         lualine_c = {
             {
                 'filename',
                 file_status = true,     -- Displays file status (readonly status, modified status)
                 newfile_status = false, -- Display new file status (new file means no write after created)
-                path = 3,
+                path = 1,
                 -- 0: Just the filename
                 -- 1: Relative path
                 -- 2: Absolute path
@@ -232,7 +339,13 @@ require('lualine').setup {
     inactive_sections = {
         lualine_a = {},
         lualine_b = {},
-        lualine_c = { 'filename' },
+        lualine_c = {
+            {
+                'filename',
+                path = 1,
+                shorting_target = 40,
+            }
+        },
         lualine_x = { 'location' },
         lualine_y = {},
         lualine_z = {}
@@ -247,7 +360,7 @@ require('lualine').setup {
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim' },
+    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim', 'cmake' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = true,
@@ -373,7 +486,7 @@ cmp.setup.cmdline(':', {
 })
 
 -- [[ Configure LSP ]]
-vim.lsp.set_log_level("off")
+-- vim.lsp.set_log_level("off")
 vim.lsp.handlers["textDocument/publishDiagnostics"] =
     vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
         underline = false,
@@ -400,6 +513,7 @@ local on_attach = function(_, bufnr)
     nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
     nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
     nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
+    nmap('gr', vim.lsp.buf.references, '[G]oto [R]eferences')
 
     -- See `:help K` for why this keymap
     nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
@@ -432,8 +546,9 @@ local clangd_flags = {
     "--cross-file-rename",
     "--clang-tidy",
     "--header-insertion=never",
-    "--compile-commands-dir=/home/kkelso/projects/9305/kevyn",
-    --"--limit-references=500",
+    -- "--compile-commands-dir=/home/kkelso/projects/9305/kevyn",
+    "--compile-commands-dir=./build",
+    -- "--limit-references=600",
     --"--limit-results=50",
     --"--project-root=/home/kkelso/projects/9305",
     --"--remote-index-address=''",
@@ -447,7 +562,6 @@ local servers = {
     }, --TODO: pyright config
     tsserver = {},
     html = { filetypes = { 'html', 'twig', 'hbs' } },
-
     lua_ls = {
         Lua = {
             workspace = { checkThirdParty = false },
@@ -466,6 +580,11 @@ local servers = {
             -- Defaults to error.
             diagnosticSeverity = "Hint"
         }
+    cmake = {
+        cmd = { "cmake-language-server" },
+        filetypes = { 'CMakeLists.txt', "cmake" },
+        rootPatterns = { "build/" },
+        initialization_options = { buildDirectory = "build" },
     },
 }
 
