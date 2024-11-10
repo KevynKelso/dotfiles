@@ -610,3 +610,4 @@ mason_lspconfig.setup_handlers {
         }
     end
 }
+vim.opt.rtp:prepend('/home/vyn/projects/dotfiles/scripts')
