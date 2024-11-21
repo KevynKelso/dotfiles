@@ -69,3 +69,10 @@ ax.set(xlabel="x-label", ylabel="y-label", title="Sample Title")
 ax.grid()
 fig.savefig("test.png")
 endsnippet
+
+snippet click_cli "Simple click cli" b
+@click.command()
+@click.option("$1", "$2", default=$3, help="$4")
+def $5($2):
+    pass
+endsnippet
