@@ -487,7 +487,7 @@ cmp.setup.cmdline(':', {
 })
 
 -- [[ Configure LSP ]]
--- vim.lsp.set_log_level("off")
+vim.lsp.set_log_level("off")
 vim.lsp.handlers["textDocument/publishDiagnostics"] =
     vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
         underline = false,
