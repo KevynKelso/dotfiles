@@ -219,6 +219,7 @@ nnoremap <leader>j :call TrimWhitespace()<CR>
 nnoremap <leader>l yiw:Lines <c-r>"<cr>
 nnoremap <leader>o :G blame<CR>
 nnoremap <leader>t yiw:Ag <c-r>"<cr>
+nnoremap <leader>- :Explore<CR>
 nnoremap <silent><leader>0 :exec '!echo "cb" \| nc localhost 65432'<CR>
 nnoremap <silent><leader>7 :exec '!echo "tt" \| nc localhost 65432'<CR>
 nnoremap <silent><leader>8 :exec '!echo "bb" \| nc localhost 65432'<CR>
