@@ -6,9 +6,11 @@
 # encrypted keys/values
 
 import os
+import sys
 from os.path import isdir, isfile, join
 
 import yaml
+
 from sqlitedict import SqliteDict
 
 
@@ -16,6 +18,9 @@ class ScriptData2:
     script_storage = "~/.local/state/scripts"
 
     def __init__(self, name: str, config_file="config.yaml"):
+        if "win" in sys.platform:
+            raise NotImplementedError("ScriptData2 is not supported on windows.")
+
         if isfile(config_file):
             with open(config_file, "r") as f:
                 config = yaml.safe_load(f)
