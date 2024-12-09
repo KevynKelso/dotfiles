@@ -1,0 +1,5 @@
+halo==0.0.31
+pynvim==0.5.1
+pytest==8.3.3
+PyYAML==6.0.2
+sqlitedict==2.1.0
