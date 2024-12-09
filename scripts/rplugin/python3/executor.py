@@ -2,10 +2,12 @@
 """Execute commands automatically from nvim"""
 # -*- coding: utf-8 -*-
 
+import textwrap
 import threading
 from subprocess import PIPE, STDOUT, Popen
 
 import pynvim
+
 from script_data2 import ScriptData2
 
 
@@ -42,7 +44,13 @@ class ExecutorPlugin:
 
     def _nvim_print(self, output: str) -> None:
         """Print output to nvim using the notify API"""
-        self.nvim.async_call(self.nvim.command, f'lua vim.notify("{output}")')
+        output = output.replace('"', "'")
+        wrapped_output = textwrap.wrap(output, 80)
+        if len(wrapped_output) > 5:
+            wrapped_output = wrapped_output[0:4]
+            wrapped_output.append("...")
+        for out in wrapped_output:
+            self.nvim.async_call(self.nvim.command, f'lua vim.notify("{out}")')
 
     def _execute(self):
         self.running = True
