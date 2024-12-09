@@ -56,7 +56,7 @@ require('lazy').setup({
         dependencies = {
             { 'williamboman/mason.nvim', config = true },
             'williamboman/mason-lspconfig.nvim',
-            { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
+            { 'j-hui/fidget.nvim' }, -- , tag = 'legacy', opts = {} },
             'folke/neodev.nvim',
         },
     },
@@ -611,4 +611,8 @@ mason_lspconfig.setup_handlers {
         }
     end
 }
+
+package.path = '/home/vyn/projects/dotfiles/nvim/?.lua;' .. package.path
+require("fidget-config")
+
 vim.opt.rtp:prepend('/home/vyn/projects/dotfiles/scripts')
