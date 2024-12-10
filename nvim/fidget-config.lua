@@ -17,7 +17,7 @@ fidget.setup({
 
     -- Options related to how LSP progress messages are displayed as notifications
     display = {
-      render_limit = 16,          -- How many LSP messages to show at once
+      render_limit = 32,          -- How many LSP messages to show at once
       done_ttl = 3,               -- How long a message should persist after completion
       done_icon = "✔",            -- Icon shown when all LSP progress tasks are complete
       done_style = "Constant",    -- Highlight group for completed LSP tasks
@@ -65,7 +65,7 @@ fidget.setup({
 
     -- Options related to how notifications are rendered as text
     view = {
-      stack_upwards = true,       -- Display notification items from bottom to top
+      stack_upwards = false,       -- Display notification items from bottom to top
       icon_separator = " ",       -- Separator between group name and icon
       group_separator = "---",    -- Separator between notification groups
       group_separator_hl =        -- Highlight group used for group separator
@@ -86,7 +86,7 @@ fidget.setup({
       max_height = 0,             -- Maximum height of the notification window
       x_padding = 1,              -- Padding from right edge of window boundary
       y_padding = 0,              -- Padding from bottom edge of window boundary
-      align = "bottom",           -- How to align the notification window
+      align = "top",           -- How to align the notification window
       relative = "editor",        -- What the notification window position is relative to
     },
   },
