@@ -117,7 +117,8 @@ require('lazy').setup({
         'mrcjkb/rustaceanvim',
         version = '^3',
         ft = { 'rust' },
-    }
+    },
+    { "danymat/neogen", config = true, },
     -- don't forget rustup component add rust-analyzer
 }, {})
 
@@ -219,6 +220,7 @@ nnoremap <leader>j :call TrimWhitespace()<CR>
 nnoremap <leader>l yiw:Lines <c-r>"<cr>
 nnoremap <leader>o :G blame<CR>
 nnoremap <leader>t yiw:Ag <c-r>"<cr>
+nnoremap <leader>d :Neogen<cr>
 nnoremap <leader>- :Explore<CR>
 nnoremap <silent><leader>0 :exec '!echo "cb" \| nc localhost 65432'<CR>
 nnoremap <silent><leader>7 :exec '!echo "tt" \| nc localhost 65432'<CR>
