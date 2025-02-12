@@ -152,6 +152,7 @@ vim.opt.termguicolors = true
 vim.wo.signcolumn = 'yes'
 
 -- General settings
+vim.opt.swapfile = false
 vim.o.hlsearch = false
 vim.o.hidden = true
 vim.o.errorbells = false
