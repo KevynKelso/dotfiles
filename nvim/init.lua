@@ -18,6 +18,11 @@ require('lazy').setup({
     'junegunn/fzf',
     'junegunn/fzf.vim',
     'sainnhe/gruvbox-material',
+    {
+      "ibhagwan/fzf-lua",
+      dependencies = { "nvim-tree/nvim-web-devicons" },
+      opts = {}
+    },
 
     {
         "mfussenegger/nvim-lint",
@@ -30,7 +35,7 @@ require('lazy').setup({
 
             lint.linters_by_ft = {
                 rst = { "rstcheck" },
-                python = { "pylint" },
+                -- python = { "pylint" },
             }
 
             local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
@@ -120,6 +125,22 @@ require('lazy').setup({
     },
     { "danymat/neogen", config = true, },
     { "nvim-treesitter/nvim-treesitter-context" },
+
+    {
+      "folke/noice.nvim",
+      event = "VeryLazy",
+      opts = {
+        -- add any options here
+      },
+      dependencies = {
+        -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+        "MunifTanjim/nui.nvim",
+        -- OPTIONAL:
+        --   `nvim-notify` is only needed, if you want to use the notification view.
+        --   If not available, we use `mini` as the fallback
+        "rcarriga/nvim-notify",
+        }
+    },
     -- don't forget rustup component add rust-analyzer
 }, {})
 
@@ -135,6 +156,8 @@ command! -bang -nargs=? -complete=dir Files
     \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--layout=reverse', '--info=inline']}), <bang>0)
 ]]
 vim.cmd [[ hi DiagnosticVirtualTextWarn guifg=Gray ctermfg=Gray ]]
+
+-- require('fzf-lua').setup({'fzf-vim'})
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -163,8 +186,8 @@ vim.o.relativenumber = true
 vim.o.showmode = false
 vim.o.updatetime = 50
 vim.o.timeoutlen = 180
-vim.opt.shiftwidth = 4
-vim.opt.tabstop = 4
+-- vim.opt.shiftwidth = 4
+-- vim.opt.tabstop = 4
 vim.opt.expandtab = true
 vim.opt.smartindent = true
 vim.o.cmdheight = 1
@@ -202,14 +225,15 @@ nnoremap <C-n> :bn<CR>
 nnoremap <C-p> :bp<CR>
 nnoremap <C-h> :tabn<CR>
 "nnoremap : :silent
+nnoremap <expr> j (v:count > 5 ? "m'" . v:count : "") . 'j'
+nnoremap <expr> k (v:count > 5 ? "m'" . v:count : "") . 'k'
 nnoremap n nzz
 nnoremap N Nzz
+" leader mappings
 nnoremap <Leader>N :cprevious<CR>
 nnoremap <Leader>d :bdelete<CR>
 nnoremap <Leader>n :cnext<CR>
 nnoremap <Leader>w :wa<CR>
-nnoremap <expr> j (v:count > 5 ? "m'" . v:count : "") . 'j'
-nnoremap <expr> k (v:count > 5 ? "m'" . v:count : "") . 'k'
 nnoremap <leader>F :Files<cr>
 nnoremap <leader>I :e ~/.ignore<CR>
 nnoremap <leader>b :Buffers<cr>
@@ -224,28 +248,31 @@ nnoremap <leader>o :G blame<CR>
 nnoremap <leader>t yiw:Ag <c-r>"<cr>
 nnoremap <leader>h :Neogen<cr>
 nnoremap <leader>- :Explore<CR>
-nnoremap <silent><leader>0 :exec '!echo "cb" \| nc localhost 65432'<CR>
+" nnoremap <leader>1 :ExecutorAux1<CR>
 nnoremap <silent><leader>7 :exec '!echo "tt" \| nc localhost 65432'<CR>
 nnoremap <silent><leader>8 :exec '!echo "bb" \| nc localhost 65432'<CR>
 nnoremap <silent><leader>9 :exec '!echo "uu" \| nc localhost 65432'<CR>
 nnoremap <silent>y<Leader>f :let @* = expand("%")<CR>
-nnoremap dl dt)
-nnoremap gdh :diffget //2<CR>
-nnoremap gdl :diffget //3<CR>
 noremap <Leader>s :UltiSnipsEdit<CR>
 nnoremap <Leader>g :G<CR>
-tnoremap <Esc> <C-\><C-n>
 vnoremap <leader>k "ky :!echo "<c-R>k" \| nc localhost 10004<CR>
 vnoremap <leader>t y:Ag <c-r>"<cr>
-vnoremap <silent> <c-u> <esc>:Gdiff<cr>gv:diffget<cr><c-w><c-w>ZZ
-vnoremap J :m '>+1<CR>gv=gv
-vnoremap K :m '<-2<CR>gv=gv
-
 " running files
 autocmd FileType cpp             nnoremap <buffer> <Leader>v :let @v=@%<CR>:vsp<CR>:term<CR>Ag++ <C-\><C-n>"vpA -o a.out && ./a.out<CR>
 autocmd FileType python          nnoremap <buffer> <Leader>v :let @v=@%<CR>:vsp<CR>:term<CR>Apython <C-\><C-n>"vpA<CR>
 autocmd FileType markdown        nnoremap <buffer> <Leader>v :let @v=@%<CR>:vsp<CR>:term<CR>Aglow <C-\><C-n>"vpA<CR>
 autocmd FileType c               nnoremap <buffer> <Leader>v :let @v=@%<CR>:vsp<CR>:term<CR>Abu<CR>
+" executor plugin
+nnoremap <leader>0 :ExecutorRun<cr>
+
+nnoremap dl dt)
+nnoremap gdh :diffget //2<CR>
+nnoremap gdl :diffget //3<CR>
+tnoremap <Esc> <C-\><C-n>
+vnoremap <silent> <c-u> <esc>:Gdiff<cr>gv:diffget<cr><c-w><c-w>ZZ
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
 
 autocmd FileType netrw nnoremap ? :help netrw-quickmap<CR>
 function! Scratch()
@@ -507,7 +534,7 @@ cmp.setup.cmdline(':', {
 })
 
 -- [[ Configure LSP ]]
-vim.lsp.set_log_level("off")
+-- vim.lsp.set_log_level("off")
 vim.lsp.handlers["textDocument/publishDiagnostics"] =
     vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
         underline = false,
@@ -567,11 +594,9 @@ local clangd_flags = {
     "--cross-file-rename",
     "--clang-tidy",
     "--header-insertion=never",
-    -- "--compile-commands-dir=/home/kkelso/projects/9305/kevyn",
     "--compile-commands-dir=./build",
     -- "--limit-references=600",
     --"--limit-results=50",
-    --"--project-root=/home/kkelso/projects/9305",
     --"--remote-index-address=''",
     "--all-scopes-completion",
 }
@@ -579,9 +604,9 @@ local clangd_flags = {
 local servers = {
     clangd = { cmd = { "clangd", unpack(clangd_flags) } },
     pyright = {
-        python = { analysis = { typeCheckingMode = "basic", diagnosticMode = "workspace", ignore = ".pyenv" } }
+        python = { analysis = { typeCheckingMode = "basic", diagnosticMode = "workspace", extraPaths = {"/home/kkelso/projects2/pctest/packetcraft/controller/tools/fixture"}, } }
     }, --TODO: pyright config
-    tsserver = {},
+    -- tsserver = {},
     html = { filetypes = { 'html', 'twig', 'hbs' } },
     lua_ls = {
         Lua = {
@@ -608,6 +633,7 @@ local servers = {
         rootPatterns = { "build/" },
         initialization_options = { buildDirectory = "build" },
     },
+    rust_analyzer = {},
 }
 
 -- Setup neovim lua configuration
@@ -632,7 +658,26 @@ mason_lspconfig.setup_handlers {
     end
 }
 
-package.path = '/home/vyn/projects/dotfiles/nvim/?.lua;' .. package.path
+require("noice").setup({
+  lsp = {
+    -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+    override = {
+      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+      ["vim.lsp.util.stylize_markdown"] = true,
+      ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
+    },
+  },
+  -- you can enable a preset for easier configuration
+  presets = {
+    bottom_search = true, -- use a classic bottom cmdline for search
+    command_palette = true, -- position the cmdline and popupmenu together
+    long_message_to_split = true, -- long messages will be sent to a split
+    inc_rename = false, -- enables an input dialog for inc-rename.nvim
+    lsp_doc_border = true, -- add a border to hover docs and signature help
+  },
+})
+
+package.path = '/kkelso/dotfiles/nvim/?.lua;' .. package.path
 require("fidget-config")
 
-vim.opt.rtp:prepend('/home/vyn/projects/dotfiles/scripts')
+vim.opt.rtp:prepend('/kkelso/dotfiles/scripts')
