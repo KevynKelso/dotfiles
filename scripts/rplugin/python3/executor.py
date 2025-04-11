@@ -24,11 +24,15 @@ class ExecutorPlugin:
         if not sd.db.get("enable"):
             sd.db["enable"] = True
 
-    @pynvim.autocmd("BufWritePost", pattern="*.c", eval='expand("<afile>")', sync=True)
-    def on_bufwritepost(self, filename):
-        """Execute some functions after writing a C file."""
-        sd = ScriptData2(ExecutorPlugin.__name__)
-        if sd.db.get("enable") and not self.running:
+    # @pynvim.autocmd("BufWritePost", pattern="*.c", eval='expand("<afile>")', sync=True)
+    # def on_bufwritepost(self, filename):
+    #     """Execute some functions after writing a C file."""
+    #     if self._can_run():
+    #         threading.Thread(target=self._execute).start()
+
+    @pynvim.command("ExecutorRun", nargs="*", range="")
+    def executor_run(self, args, range):
+        if self._can_run():
             threading.Thread(target=self._execute).start()
 
     @pynvim.command("ExecutorSetEnable", nargs="*", range="")
@@ -41,6 +45,37 @@ class ExecutorPlugin:
         else:
             sd.db["enable"] = False
             self.nvim.out_write("disabled\n")
+
+    @pynvim.command("ExecutorAux1", nargs="*", range="")
+    def executor_aux1(self, args, range):
+        """Execute aux command 1 nvim command."""
+        if self._can_run():
+            threading.Thread(target=self._execute_aux1).start()
+
+    def _execute_aux1(self):
+        """Execute aux command 1."""
+        self.running = True
+        self._nvim_print("upload start")
+        cmd = "bu --no-build".split()
+        output = b""
+        with Popen(cmd, stdout=PIPE, stderr=STDOUT) as proc:
+            for line in iter(proc.stdout.readline, b""):
+                output += line
+
+        with open(self.log_file, "a", encoding="utf-8") as fp:
+            fp.write(output.decode("utf-8"))
+
+        msg = "upload successful"
+        if proc.returncode != 0:
+            msg = f"upload failed status {proc.returncode}"
+        self._nvim_print(msg)
+        self.running = False
+
+
+    def _can_run(self) -> bool:
+        """Test if we can execute."""
+        sd = ScriptData2(ExecutorPlugin.__name__)
+        return sd.db.get("enable") and not self.running
 
     def _nvim_print(self, output: str) -> None:
         """Print output to nvim using the notify API"""
@@ -55,7 +90,7 @@ class ExecutorPlugin:
     def _execute(self):
         self.running = True
         self._nvim_print("build start")
-        cmd = "bu --no-erase --no-upload".split()
+        cmd = "bu".split()
         output = b""
         with Popen(cmd, stdout=PIPE, stderr=STDOUT) as proc:
             for line in iter(proc.stdout.readline, b""):
