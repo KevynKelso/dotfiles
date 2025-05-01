@@ -157,7 +157,17 @@ command! -bang -nargs=? -complete=dir Files
 ]]
 vim.cmd [[ hi DiagnosticVirtualTextWarn guifg=Gray ctermfg=Gray ]]
 
--- require('fzf-lua').setup({'fzf-vim'})
+require('fzf-lua').setup {
+    keymap = {
+        builtin = {
+            ["<C-p>"] = "toggle-preview",
+        },
+        fzf = {
+            ["ctrl-d"] = "half-page-down",
+            ["ctrl-u"] = "half-page-up",
+        },
+    }
+}
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -234,18 +244,19 @@ nnoremap <Leader>N :cprevious<CR>
 nnoremap <Leader>d :bdelete<CR>
 nnoremap <Leader>n :cnext<CR>
 nnoremap <Leader>w :wa<CR>
-nnoremap <leader>F :Files<cr>
+nnoremap <leader>F :FzfLua files<cr>
 nnoremap <leader>I :e ~/.ignore<CR>
-nnoremap <leader>b :Buffers<cr>
+nnoremap <leader>b :FzfLua buffers<cr>
 nnoremap <leader>c f{a<cr><esc>O
 nnoremap <leader>E :Ex<CR>
-nnoremap <leader>f :Ag<cr>
+nnoremap <leader>f :FzfLua live_grep_native<cr>
 nnoremap <leader>gd :Gvdiffsplit!<CR>
 nnoremap <leader>i :e ~/.config/nvim/init.lua<CR>
 nnoremap <leader>j :call TrimWhitespace()<CR>
 nnoremap <leader>l yiw:Lines <c-r>"<cr>
 nnoremap <leader>o :G blame<CR>
-nnoremap <leader>t yiw:Ag <c-r>"<cr>
+" nnoremap <leader>t yiw:Ag <c-r>"<cr>
+nnoremap <leader>t :FzfLua grep_cword<CR>
 nnoremap <leader>h :Neogen<cr>
 nnoremap <leader>- :Explore<CR>
 " nnoremap <leader>1 :ExecutorAux1<CR>
