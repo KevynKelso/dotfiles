@@ -267,7 +267,7 @@ nnoremap <silent>y<Leader>f :let @* = expand("%")<CR>
 noremap <Leader>s :UltiSnipsEdit<CR>
 nnoremap <Leader>g :G<CR>
 vnoremap <leader>k "ky :!echo "<c-R>k" \| nc localhost 10004<CR>
-vnoremap <leader>t y:Ag <c-r>"<cr>
+vnoremap <leader>t :FzfLua grep_visual<CR>
 " running files
 autocmd FileType cpp             nnoremap <buffer> <Leader>v :let @v=@%<CR>:vsp<CR>:term<CR>Ag++ <C-\><C-n>"vpA -o a.out && ./a.out<CR>
 autocmd FileType python          nnoremap <buffer> <Leader>v :let @v=@%<CR>:vsp<CR>:term<CR>Apython <C-\><C-n>"vpA<CR>
