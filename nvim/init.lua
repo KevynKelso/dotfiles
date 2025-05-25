@@ -196,10 +196,14 @@ vim.o.relativenumber = true
 vim.o.showmode = false
 vim.o.updatetime = 50
 vim.o.timeoutlen = 180
--- vim.opt.shiftwidth = 4
--- vim.opt.tabstop = 4
-vim.opt.expandtab = true
+
+-- indentation options
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+vim.o.softtabstop = 4
 vim.opt.smartindent = true
+vim.opt.expandtab = true
+
 vim.o.cmdheight = 1
 vim.opt.colorcolumn = "80"
 vim.o.exrc = true
