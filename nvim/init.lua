@@ -166,7 +166,12 @@ require('fzf-lua').setup {
             ["ctrl-d"] = "half-page-down",
             ["ctrl-u"] = "half-page-up",
         },
-    }
+    },
+    winopts = {
+        preview = {
+            hidden = true,
+        },
+    },
 }
 
 -- [[ Setting options ]]
