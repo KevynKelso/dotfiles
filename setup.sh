@@ -3,6 +3,7 @@
 # Git configuration
 git config --global user.name "Kevyn Kelso"
 git config --global core.excludesFile '~/.ignore'
+git config --global pull.rebase true
 
 
 set -e
