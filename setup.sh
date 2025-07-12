@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Git configuration
+git config --global user.name "Kevyn Kelso"
+git config --global core.excludesFile '~/.ignore'
+
+
 set -e
 
 my_python_version="3.9.14"
